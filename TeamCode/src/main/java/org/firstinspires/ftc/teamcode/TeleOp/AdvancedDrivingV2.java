@@ -98,7 +98,9 @@ public class AdvancedDrivingV2 extends OpMode
     public void init() {
         //Get all of the motors and servos
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
+        leftDrive2  = hardwareMap.get(DcMotor.class, "left_drive2");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+        rightDrive2 = hardwareMap.get(DcMotor.class, "right_drive2");
         lift = hardwareMap.get(DcMotor.class, "lift");
         lift2 = hardwareMap.get(DcMotor.class, "lift2");
         climber = hardwareMap.get(DcMotor.class, "climber");
@@ -107,14 +109,20 @@ public class AdvancedDrivingV2 extends OpMode
 
         // Set up drive motors
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftDrive2.setDirection(DcMotor.Direction.FORWARD);
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive2.setDirection(DcMotor.Direction.REVERSE);
 
         //Encoder stuff
         leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftDrive2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightDrive2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftDrive2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightDrive2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //Set up arm motors
         lift.setDirection(DcMotor.Direction.FORWARD);
