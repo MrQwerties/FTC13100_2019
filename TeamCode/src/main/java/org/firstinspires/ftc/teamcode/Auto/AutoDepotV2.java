@@ -57,9 +57,9 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "Crater side - no depot", group = "Linear Opmode")
+@Autonomous(name = "Depot side - no crater", group = "Linear Opmode")
 //@Disabled
-public class AutoCraterV6 extends LinearOpMode {
+public class AutoDepotV2 extends LinearOpMode {
     //TensorFlow stuff
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
     private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
@@ -151,14 +151,19 @@ public class AutoCraterV6 extends LinearOpMode {
 
         //Sample, hopefully
         if(getMineral() == MINERAL_GOLD){
-            setPowers(-0.5, 0.5, 70);
+            setPowers(-0.5, 0.5, 70); //Turn a bit to the left to avoid hitting the middle mineral
             delay();
-            setPowers(0.5, 0.5, 1400);
+            setPowers(0.5, 0.5, 1400); //Boop
             delay();
-            setPowers(0.9, -0.9, 100);
+            setPowers(0.9, -0.9, 100); //Turn partway towards the depot
             delay();
-            setPowers(1, 1, 800);
+            setPowers(1, 1, 800); //Drive partway towards the depot
             delay();
+            setPowers(0.5, -0.5, 250); //Turn to the depot
+            delay();
+            setPowers(1, 1, 600); //Drive to the depot
+
+            deposit();
 
             tfod.shutdown();
             stop();
@@ -167,21 +172,30 @@ public class AutoCraterV6 extends LinearOpMode {
         setPowers(1, -1, 140);
         delay();
         if(getMineral() == MINERAL_GOLD && !booped){
-            setPowers(1, 1, 1500);
+            setPowers(1, 1, 1500); //Hopefully go straight to the depot
             delay();
+
+            deposit();
 
             tfod.shutdown();
             stop();
         }
 
-        setPowers(1, -1, 130);
+        setPowers(1, -1, 130); //Turn to the last mineral
         delay();
-        setPowers(0.5, 0.5, 2400);
+        setPowers(0.5, 0.5, 2400); //Boop
         delay();
-        setPowers(-1, 1, 310);
+        setPowers(-1, 1, 310); //Turn partway to the depot
         delay();
-        setPowers(1, 1, 1000);
+        setPowers(1, 1, 700); //Drive partway to the depot
         delay();
+        setPowers(-1, 1, 100);
+        delay();
+        setPowers(1, 1, 600);
+        delay();
+
+        deposit();
+
         tfod.shutdown();
         stop();
     }
@@ -249,5 +263,13 @@ public class AutoCraterV6 extends LinearOpMode {
             }
         }
         return MINERAL_NONE;
+    }
+
+    private void deposit() {
+        intake.setPosition(1);
+        sleep(3000);
+        setPowers(-0.5, -0.5, 700);
+        intake.setPosition(0);
+        delay();
     }
 }
