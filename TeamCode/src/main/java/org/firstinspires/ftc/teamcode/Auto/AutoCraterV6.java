@@ -57,9 +57,9 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Auto test: crater side", group="Linear Opmode")
+@Autonomous(name = "Crater side - no depot", group = "Linear Opmode")
 //@Disabled
-public class AutoCraterV5 extends LinearOpMode {
+public class AutoCraterV6 extends LinearOpMode {
     //TensorFlow stuff
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
     private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
@@ -132,7 +132,7 @@ public class AutoCraterV5 extends LinearOpMode {
         /*
         //Extend hook
         climber.setPower(1);
-        sleep(540);
+        sleep(550);
         climber.setPower(0);
         delay();
         */
@@ -151,80 +151,37 @@ public class AutoCraterV5 extends LinearOpMode {
 
         //Sample, hopefully
         if(getMineral() == MINERAL_GOLD){
-            boop(700);
-            telemetry.addData("Position", "Left");
-            telemetry.update();
-            booped = true;
+            setPowers(0.5, 0.5, 1400);
+            delay();
+            setPowers(1, -1, 300);
+            delay();
+            setPowers(1, 1, 500);
+            delay();
+
+            tfod.shutdown();
+            stop();
         }
 
         setPowers(1, -1, 120);
         delay();
         if(getMineral() == MINERAL_GOLD && !booped){
-            boop(850);
-            telemetry.addData("Position", "Middle");
-            telemetry.update();
-            booped = true;
+            setPowers(1, 1, 1500);
+            delay();
+
+            tfod.shutdown();
+            stop();
         }
 
         setPowers(1, -1, 105);
         delay();
-        if(!booped){ //Worth a shot
-            boop(1200);
-            telemetry.addData("Position", "Right");
-            telemetry.update();
-            booped = true; //Just for good measure
-        }
+        setPowers(0.5, 0.5, 2400);
         delay();
-
-        setPowers(-0.5, 0.5, 200);
+        setPowers(-1, 1, 500);
         delay();
-
-        //Take a step forward lads. It'll be easier that way
-        setPowers(0.5, 0.5, 250);
-        delay();
-
-        //todo: go to depot
-        //Turn towards wall
-        setPowers(-1, 1, 400);
-        delay();
-
-        //Drive to wall
         setPowers(1, 1, 1000);
         delay();
-
-        //Turn towards depot
-        setPowers(-1, 1, 350);
-        delay();
-
-        //Drive to depot
-        setPowers(1, 1, 800);
-        delay();
-
-        //Turn a bit more
-        setPowers(-0.5, 0.5, 250);
-        delay();
-
-        //Finish the drive to depot
-        setPowers(1, 1, 800);
-        delay();
-
-        //Deposit beaver ball
-        intake.setPosition(1);
-        sleep(3000);
-
-        //Drive to crater
-        //Possibly turn a bit before the long drive
-        setPowers(-0.5, 0.5, 200);
-        delay();
-
-        setPowers(-1, -1, 1500);
-        delay();
-
-        setPowers(-1, -1, 1800);
-        delay();
-        intake.setPosition(0);
-
         tfod.shutdown();
+        stop();
     }
 
     private void setPowers(double left, double right, long amount){
@@ -291,12 +248,5 @@ public class AutoCraterV5 extends LinearOpMode {
             }
         }
         return MINERAL_NONE;
-    }
-
-    private void boop(long amount) {
-        setPowers(0.5, 0.5, 2 * amount);
-        delay(500);
-        setPowers(-0.8, -0.8, amount);
-        delay(500);
     }
 }
