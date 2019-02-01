@@ -153,7 +153,7 @@ public class AutoCraterV6 extends LinearOpMode {
         if(getMineral() == MINERAL_GOLD){
             setPowers(0.5, 0.5, 1400);
             delay();
-            setPowers(1, -1, 300);
+            setPowers(0.9, -0.9, 200);
             delay();
             setPowers(1, 1, 500);
             delay();
@@ -162,7 +162,7 @@ public class AutoCraterV6 extends LinearOpMode {
             stop();
         }
 
-        setPowers(1, -1, 120);
+        setPowers(1, -1, 140);
         delay();
         if(getMineral() == MINERAL_GOLD && !booped){
             setPowers(1, 1, 1500);
@@ -172,11 +172,11 @@ public class AutoCraterV6 extends LinearOpMode {
             stop();
         }
 
-        setPowers(1, -1, 105);
+        setPowers(1, -1, 130);
         delay();
         setPowers(0.5, 0.5, 2400);
         delay();
-        setPowers(-1, 1, 500);
+        setPowers(-1, 1, 310);
         delay();
         setPowers(1, 1, 1000);
         delay();
