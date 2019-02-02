@@ -128,14 +128,8 @@ public class AutoDepotV2 extends LinearOpMode {
         waitForStart();
         tfod.activate();
 
-        //todo: uncomment this
-        /*
         //Extend hook
-        climber.setPower(1);
-        sleep(550);
-        climber.setPower(0);
-        delay();
-        */
+        extendClimber();
 
         //Turn away from lander
         setPowers(-1, 1, 200);
@@ -146,22 +140,25 @@ public class AutoDepotV2 extends LinearOpMode {
         delay();
 
         //Turn a bit more, towards the first mineral
-        setPowers(0.5, -0.5, 100);
+        setPowers(0.5, -0.5, 50);
         delay();
+
+        retractClimber();
 
         //Sample, hopefully
         if(getMineral() == MINERAL_GOLD){
-            setPowers(-0.5, 0.5, 70); //Turn a bit to the left to avoid hitting the middle mineral
+            setPowers(-0.5, 0.5, 100); //Turn a bit to the left to avoid hitting the middle mineral
             delay();
-            setPowers(0.5, 0.5, 1400); //Boop
+            setPowers(0.5, 0.5, 1000); //Boop
             delay();
-            setPowers(0.9, -0.9, 100); //Turn partway towards the depot
+            setPowers(0.9, -0.9, 125); //Turn partway towards the depot
             delay();
-            setPowers(1, 1, 800); //Drive partway towards the depot
+            setPowers(1, 1, 500); //Drive partway towards the depot
             delay();
-            setPowers(0.5, -0.5, 250); //Turn to the depot
+            setPowers(0.9, -0.9, 200); //Turn to the depot
             delay();
-            setPowers(1, 1, 600); //Drive to the depot
+            setPowers(1, 1, 650); //Drive to the depot
+            delay();
 
             deposit();
 
@@ -172,7 +169,11 @@ public class AutoDepotV2 extends LinearOpMode {
         setPowers(1, -1, 140);
         delay();
         if(getMineral() == MINERAL_GOLD && !booped){
-            setPowers(1, 1, 1500); //Hopefully go straight to the depot
+            setPowers(1, 1, 900); //Go partway to the depot
+            delay();
+            setPowers(-0.5, 0.5, 120); //Turn a little towards the depot
+            delay();
+            setPowers(1, 1, 900); //Go to the depot
             delay();
 
             deposit();
@@ -185,13 +186,13 @@ public class AutoDepotV2 extends LinearOpMode {
         delay();
         setPowers(0.5, 0.5, 2400); //Boop
         delay();
-        setPowers(-1, 1, 310); //Turn partway to the depot
+        setPowers(-1, 1, 300); //Turn partway to the depot
         delay();
         setPowers(1, 1, 700); //Drive partway to the depot
         delay();
         setPowers(-1, 1, 100);
         delay();
-        setPowers(1, 1, 600);
+        setPowers(1, 1, 500);
         delay();
 
         deposit();
@@ -250,7 +251,7 @@ public class AutoDepotV2 extends LinearOpMode {
     }
 
     private int getMineral() {
-        delay(3000);
+        delay(1000);
         List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
         if(updatedRecognitions != null){
             if(updatedRecognitions.size() > 0){
@@ -267,9 +268,26 @@ public class AutoDepotV2 extends LinearOpMode {
 
     private void deposit() {
         intake.setPosition(1);
-        sleep(3000);
-        setPowers(-0.5, -0.5, 700);
-        intake.setPosition(0);
+        sleep(4000);
+        setPowers(-0.5, -0.5, 600);
+        sleep(500);
+        intake.setPosition(0.5);
+        delay();
+    }
+
+    private void extendClimber() {
+        delay();
+        climber.setPower(1);
+        sleep(575);
+        climber.setPower(0);
+        delay(1000);
+    }
+
+    private void retractClimber() {
+        delay();
+        climber.setPower(-1);
+        sleep(450);
+        climber.setPower(0);
         delay();
     }
 }

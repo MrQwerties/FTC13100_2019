@@ -128,14 +128,8 @@ public class AutoCraterV6 extends LinearOpMode {
         waitForStart();
         tfod.activate();
 
-        //todo: uncomment this
-        /*
         //Extend hook
-        climber.setPower(1);
-        sleep(550);
-        climber.setPower(0);
-        delay();
-        */
+        extendClimber();
 
         //Turn away from lander
         setPowers(-1, 1, 200);
@@ -145,9 +139,7 @@ public class AutoCraterV6 extends LinearOpMode {
         setPowers(1, 1, 200);
         delay();
 
-        //Turn a bit more, towards the first mineral
-        setPowers(0.5, -0.5, 100);
-        delay();
+        retractClimber();
 
         //Sample, hopefully
         if(getMineral() == MINERAL_GOLD){
@@ -164,17 +156,17 @@ public class AutoCraterV6 extends LinearOpMode {
             stop();
         }
 
-        setPowers(1, -1, 140);
+        setPowers(1, -1, 160);
         delay();
         if(getMineral() == MINERAL_GOLD && !booped){
-            setPowers(1, 1, 1500);
+            setPowers(1, 1, 1600);
             delay();
 
             tfod.shutdown();
             stop();
         }
 
-        setPowers(1, -1, 130);
+        setPowers(1, -1, 160);
         delay();
         setPowers(0.5, 0.5, 2400);
         delay();
@@ -236,7 +228,7 @@ public class AutoCraterV6 extends LinearOpMode {
     }
 
     private int getMineral() {
-        delay(3000);
+        delay(1000);
         List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
         if(updatedRecognitions != null){
             if(updatedRecognitions.size() > 0){
@@ -249,5 +241,20 @@ public class AutoCraterV6 extends LinearOpMode {
             }
         }
         return MINERAL_NONE;
+    }
+
+    private void extendClimber() {
+        climber.setPower(1);
+        sleep(575);
+        climber.setPower(0);
+        delay(1000);
+    }
+
+    private void retractClimber() {
+        delay();
+        climber.setPower(-1);
+        sleep(450);
+        climber.setPower(0);
+        delay();
     }
 }
